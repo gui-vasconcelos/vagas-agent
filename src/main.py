@@ -10,11 +10,21 @@ Pipeline:
 7. Gera relatório + envia email
 8. Marca todas as classificadas como vistas
 
-Rodar via: python -m src.main
+Rodar via: python -m src.main  (preferido)
+     ou: python src/main.py     (também funciona — vê bloco abaixo)
 """
 import logging
+import os
 import sys
 import yaml
+
+# Permite rodar tanto como módulo (python -m src.main) quanto como script
+# direto (python src/main.py). No segundo caso, adicionamos a raiz do projeto
+# ao sys.path para que 'from src.xxx import' funcione.
+if __package__ is None or __package__ == "":
+    _root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    if _root not in sys.path:
+        sys.path.insert(0, _root)
 
 from src.sources import collect_jobs
 from src.storage import Database
