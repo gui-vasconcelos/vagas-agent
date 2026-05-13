@@ -2,42 +2,39 @@ name: Weekly Job Search
 
 on:
   schedule:
-    - cron: '0 7 * * 1' # Segundas às 07:00 UTC
-  workflow_dispatch: # Permite rodar manualmente
+    # Segunda 07:00 UTC ≈ 09:00 Stockholm no verão (CEST) / 08:00 no inverno (CET)
+    - cron: '0 7 * * 1'
+  workflow_dispatch:  # botão de "Run workflow" na UI do GitHub
 
 jobs:
   search:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write   # necessário para commitar o seen.db atualizado
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-          
-      - name: Cache dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
-          
+          cache: 'pip'
+
       - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
-          
-      - name: Cache database
-        uses: actions/cache@v4
-        with:
-          path: data/seen.db
-          key: ${{ runner.os }}-job-db-${{ github.run_id }}
-          restore-keys: |
-            ${{ runner.os }}-job-db-
-          
+        run: pip install -r requirements.txt
+
       - name: Run agent
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           EMAIL_TO: ${{ secrets.EMAIL_TO }}
           EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
-        run: python src/main.py
+        run: python -m src.main
+
+      - name: Commit updated seen.db
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/seen.db || true
+          git diff --staged --quiet || git commit -m "chore: update seen jobs DB [skip ci]"
+          git push || true
