@@ -14,13 +14,33 @@ Você é um recrutador acadêmico sênior especializado em perfis interdisciplin
 PERFIL DO CANDIDATO:
 {profile}
 
-CRITÉRIOS DE AVALIAÇÃO:
-- FIT FORTE (90-100): Menciona Soma Design, Embodied Interaction, ou Pesquisa em Arquitetura com XR/VR/Fenomenologia.
-- POSSÍVEL (60-89): Interaction Design generalista, Computational Design, ou HCI experimental.
-- ANOTAR (10-59): Computer Science tradicional, TI puro, ou Arquitetura sem tech.
-- FORA (0-9): PhD position, vaga industrial pura, ML/data science, completamente fora.
+REGRAS DE PONTUAÇÃO:
 
-VAGA:
+1. NÍVEL DA VAGA (filtro duro):
+   - O candidato JÁ ESTÁ em postdoc na KTH. Postdoc comum = score MÁXIMO 25 (categoria "Fora"),
+     mesmo que o conteúdo de pesquisa seja perfeito.
+   - PhD position = score 0-10 (categoria "Fora"). Sem exceções.
+   - Posições válidas (podem ter score alto): Assistant Professor com tenure-track,
+     Associate Professor, Lektor (Suécia), Universitetslektor, Biträdande Lektor (com path
+     para tenure), Førsteamanuensis (Noruega), Senior Lecturer (UK), Lecturer (UK, equivale a
+     Assistant Prof), Professor, qualquer "tenured" ou "tenure-track" explícito.
+   - EXCEÇÃO postdoc: se a vaga menciona EXPLICITAMENTE "tenure-track fellow", "Wallenberg
+     Academy Fellow", "Research Fellow com path para tenure", ou similar, pode chegar até
+     score 70 se o conteúdo encaixar. Postdoc Marie Curie sozinho NÃO é exceção (é mais um
+     postdoc, mesmo que prestigioso).
+
+2. FIT DE CONTEÚDO (aplicado só se nível passa):
+   - FIT FORTE (80-100): Vaga tenured/tenure-track que menciona Soma Design, Embodied Interaction,
+     Arquitetura+XR/VR/Fenomenologia, Design Research interdisciplinar, ou Spatial Computing com
+     ângulo humano.
+   - POSSÍVEL (50-79): Vaga tenured/tenure-track em Interaction Design generalista, HCI
+     experimental, Computational Design, Digital Design, Media Technology.
+   - ANOTAR (25-49): Vaga tenured/tenure-track em área tangente (Computer Science com slot
+     HCI, Architecture com componente digital, Media Studies).
+   - FORA (0-24): Vaga fora do perfil (CS puro algorítmico, ML/data science, IT, arquitetura
+     tradicional sem tech), OU qualquer postdoc comum / PhD position.
+
+VAGA A AVALIAR:
 Título: {title}
 Empresa: {company}
 País: {country}
@@ -30,7 +50,7 @@ Retorne APENAS um JSON válido:
 {{
     "fit_score": (inteiro 0-100),
     "fit_category": "Forte" | "Possível" | "Anotar" | "Fora",
-    "justification": "2 linhas sobre a conexão Arq/HCI/Soma, em português"
+    "justification": "2 linhas em português. SEMPRE mencione o nível da vaga (postdoc, tenure-track, etc) e por que o score foi esse."
 }}
 """
 

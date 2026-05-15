@@ -2,7 +2,11 @@ candidate_profile: >
   Postdoc na KTH com foco em Embodied Design e Soma Design.
   Pesquisador híbrido: Arquitetura, Interação Humano-Computador (HCI) e Tecnologias Imersivas (XR/VR).
   Especialista em Fenomenologia, Atmosfera e o papel do corpo no espaço digital e físico.
-  Busca posições que unam o design espacial com computação pervasiva ou sensibilidade somática.
+  Busca exclusivamente posições TENURE-TRACK ou TENURED (Assistant Professor com tenure-track,
+  Associate Professor, Lektor, Førsteamanuensis, Senior Lecturer no Reino Unido).
+  Postdocs comuns NÃO interessam — o candidato já está em postdoc na melhor instituição da área.
+  Postdocs com promessa explícita de conversão em tenure-track (ex: Wallenberg Academy Fellow,
+  Marie Curie com path declarado, Research Fellow com tenure pipeline) podem ser considerados.
 
 keywords:
   # Core HCI & Design
@@ -29,10 +33,16 @@ keywords:
   - assistant professor
   - associate professor
   - tenure-track
+  - tenure track
   - lektor
   - lecturer
+  - senior lecturer
   - førsteamanuensis
-  - postdoc
+  - professor
+  # Postdocs com path claro de tenure (raros, mas captura quando aparecem)
+  - tenure-track fellow
+  - wallenberg
+  - research fellow
 
 countries:
   - SE
@@ -46,6 +56,6 @@ countries:
 
 # Filtros operacionais
 filters:
-  min_fit_score_for_email: 40   # escala 0-100; abaixo disso, não entra no relatório
+  min_fit_score_for_email: 50   # postdocs comuns ficam em ~25 e não entram no email
   max_llm_calls_per_run: 60     # cap defensivo de custo
   llm_model: "google/gemini-2.0-flash-001"
