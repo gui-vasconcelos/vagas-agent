@@ -2,8 +2,11 @@ name: Weekly Job Search
 
 on:
   schedule:
-    # Segunda 07:00 UTC ≈ 09:00 Stockholm no verão (CEST) / 08:00 no inverno (CET)
-    - cron: '0 7 * * 1'
+    # Segunda 06:17 UTC ≈ 08:17 Stockholm (CEST verão) / 07:17 (CET inverno)
+    # NÃO uso "0 7" (hora cheia) porque GitHub Actions free tier atrasa/descarta
+    # jobs agendados em horários de pico (hora cheia). Minutos "ímpares" disparam
+    # com muito mais confiabilidade.
+    - cron: '17 6 * * 1'
   workflow_dispatch:  # botão de "Run workflow" na UI do GitHub
 
 jobs:
