@@ -6,7 +6,7 @@ import logging
 
 log = logging.getLogger(__name__)
 
-URL = "https://openrouter.ai/api/v1/chat/completions"
+URL = "https://api.deepseek.com/v1/chat/completions"
 
 PROMPT_TEMPLATE = """
 Você é um recrutador acadêmico sênior especializado em perfis interdisciplinares (Arquitetura + HCI).
@@ -56,17 +56,15 @@ Retorne APENAS um JSON válido:
 
 
 def classify_jobs(jobs, config):
-    api_key = os.getenv("OPENROUTER_API_KEY")
+    api_key = os.getenv("DEEPSEEK_API_KEY")
     if not api_key:
-        log.error("OPENROUTER_API_KEY não configurada")
+        log.error("DEEPSEEK_API_KEY não configurada")
         return jobs
 
-    model = config.get("filters", {}).get("llm_model", "google/gemini-2.0-flash-001")
+    model = config.get("filters", {}).get("llm_model", "deepseek-chat")
     headers = {
         "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json",
-        "HTTP-Referer": "https://github.com/vagas-agent",
-        "X-Title": "Academic Job Agent",
     }
 
     classified = []

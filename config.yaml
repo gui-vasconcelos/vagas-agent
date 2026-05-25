@@ -58,4 +58,4 @@ countries:
 filters:
   min_fit_score_for_email: 50   # postdocs comuns ficam em ~25 e não entram no email
   max_llm_calls_per_run: 60     # cap defensivo de custo
-  llm_model: "google/gemini-2.0-flash-001"
+  llm_model: "deepseek-chat"

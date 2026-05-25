@@ -11,6 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write   # necessário para commitar o seen.db atualizado
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true  # resolve warning Node.js 20 deprecation
     steps:
       - uses: actions/checkout@v4
 
@@ -25,7 +27,7 @@ jobs:
 
       - name: Run agent
         env:
-          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           EMAIL_TO: ${{ secrets.EMAIL_TO }}
           EMAIL_FROM: ${{ secrets.EMAIL_FROM }}

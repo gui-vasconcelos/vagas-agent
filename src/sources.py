@@ -41,25 +41,34 @@ def collect_jobs(config):
 
 def fetch_euraxess():
     """EURAXESS é a fonte mais importante para vagas europeias.
-    Busca por keyword principal; o pré-filtro do main.py refina depois."""
+    Coleta usando links /jobs/<id> — mais robusto que seletores de card."""
     jobs = []
+    seen = set()
     for kw in ["interaction design", "human-computer interaction", "design research"]:
         url = "https://euraxess.ec.europa.eu/jobs/search"
         r = requests.get(url, params={"keywords": kw}, headers=HEADERS, timeout=TIMEOUT)
         soup = BeautifulSoup(r.text, "lxml")
-        for card in soup.select("article, .views-row, .job-listing"):
-            a = card.select_one("h2 a, h3 a, .job-title a, a[href*='/jobs/']")
-            if not a:
-                continue
-            title = a.get_text(strip=True)
+        for a in soup.select('a[href*="/jobs/"]'):
             href = a.get("href", "")
+            if "/jobs/search" in href or href in seen:
+                continue
+            seen.add(href)
+            title = a.get_text(strip=True)
             if not title or len(title) < 8:
                 continue
-            if href.startswith("/"):
+            if not href.startswith("http"):
                 href = "https://euraxess.ec.europa.eu" + href
-            desc_el = card.select_one(".field--name-body, .job-summary, p")
-            desc = desc_el.get_text(" ", strip=True)[:1500] if desc_el else title
-            country = _extract_country(card)
+            # Sobe até o container para extrair contexto (descrição + país)
+            parent = a
+            full_text = title
+            for _ in range(5):
+                parent = parent.parent
+                if parent:
+                    full_text = parent.get_text(" ", strip=True)
+                    if len(full_text) > 100:
+                        break
+            desc = full_text[:1500]
+            country = _extract_country_from_text(full_text)
             jobs.append(_create_job(title, "EURAXESS", country, href, desc))
     return jobs
 
@@ -72,20 +81,27 @@ def fetch_academic_positions():
         "https://academicpositions.com/jobs/field/design",
     ]
     for url in urls:
-        r = requests.get(url, headers=HEADERS, timeout=TIMEOUT)
-        soup = BeautifulSoup(r.text, "lxml")
-        for card in soup.select("article, .job-card, .listing-card, [class*='JobCard']"):
-            a = card.find("a", href=True)
-            if not a:
+        try:
+            r = requests.get(url, headers=HEADERS, timeout=TIMEOUT)
+            if r.status_code == 403:
+                log.warning("Academic Positions: bloqueado por Cloudflare (403). Pulei.")
                 continue
-            title = a.get_text(strip=True)
-            href = a["href"]
-            if not title or len(title) < 8:
-                continue
-            if not href.startswith("http"):
-                href = "https://academicpositions.com" + href
-            desc = card.get_text(" ", strip=True)[:1500]
-            jobs.append(_create_job(title, "Academic Positions", "EU", href, desc))
+            r.raise_for_status()
+            soup = BeautifulSoup(r.text, "lxml")
+            for card in soup.select("article, .job-card, .listing-card, [class*='JobCard']"):
+                a = card.find("a", href=True)
+                if not a:
+                    continue
+                title = a.get_text(strip=True)
+                href = a["href"]
+                if not title or len(title) < 8:
+                    continue
+                if not href.startswith("http"):
+                    href = "https://academicpositions.com" + href
+                desc = card.get_text(" ", strip=True)[:1500]
+                jobs.append(_create_job(title, "Academic Positions", "EU", href, desc))
+        except Exception as e:
+            log.warning("Academic Positions falhou: %s", e)
     return jobs
 
 
@@ -112,20 +128,27 @@ def fetch_jobs_ac_uk():
 def fetch_nature_careers():
     jobs = []
     url = "https://www.nature.com/naturecareers/jobs"
-    r = requests.get(url, params={"q": "human-computer interaction"}, headers=HEADERS, timeout=TIMEOUT)
-    soup = BeautifulSoup(r.text, "lxml")
-    for card in soup.select("article, li.job-result, [class*='job']"):
-        a = card.find("a", href=True)
-        if not a:
-            continue
-        title = a.get_text(strip=True)
-        if not title or len(title) < 10:
-            continue
-        href = a["href"]
-        if not href.startswith("http"):
-            href = "https://www.nature.com" + href
-        desc = card.get_text(" ", strip=True)[:1500]
-        jobs.append(_create_job(title, "Nature Careers", "EU", href, desc))
+    try:
+        r = requests.get(url, params={"q": "human-computer interaction"}, headers=HEADERS, timeout=TIMEOUT)
+        if r.status_code == 403:
+            log.warning("Nature Careers: bloqueado por Cloudflare (403). Pulei.")
+            return jobs
+        r.raise_for_status()
+        soup = BeautifulSoup(r.text, "lxml")
+        for card in soup.select("article, li.job-result, [class*='job']"):
+            a = card.find("a", href=True)
+            if not a:
+                continue
+            title = a.get_text(strip=True)
+            if not title or len(title) < 10:
+                continue
+            href = a["href"]
+            if not href.startswith("http"):
+                href = "https://www.nature.com" + href
+            desc = card.get_text(" ", strip=True)[:1500]
+            jobs.append(_create_job(title, "Nature Careers", "EU", href, desc))
+    except Exception as e:
+        log.warning("Nature Careers falhou: %s", e)
     return jobs
 
 
@@ -231,6 +254,7 @@ def _create_job(title, company, country, url, description):
 
 
 def _extract_country(card):
+    """Extração legada — mantida para compatibilidade com outras fontes."""
     el = card.select_one(".field--name-field-country, .country")
     if not el:
         return ""
@@ -244,6 +268,22 @@ def _extract_country(card):
         if k in text:
             return v
     return text[:2]
+
+
+def _extract_country_from_text(text):
+    """Extrai código de país de texto livre (usado pelo EURAXESS)."""
+    mapping = [
+        ("Sweden", "SE"), ("Denmark", "DK"), ("Norway", "NO"),
+        ("Finland", "FI"), ("Netherlands", "NL"), ("Germany", "DE"),
+        ("United Kingdom", "UK"), ("Switzerland", "CH"),
+        ("France", "FR"), ("Italy", "IT"), ("Spain", "ES"),
+        ("Portugal", "PT"), ("Belgium", "BE"), ("Austria", "AT"),
+        ("Ireland", "IE"), ("Iceland", "IS"),
+    ]
+    for name, code in mapping:
+        if name in text:
+            return code
+    return ""
 
 
 def _dedup(jobs):

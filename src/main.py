@@ -103,7 +103,24 @@ def main():
     log.info("Vagas relevantes (score >= %d): %d", min_score, len(relevant))
 
     if not relevant:
-        log.info("Nenhuma vaga acima do threshold. Email não enviado.")
+        # Weekly digest: manda email mesmo sem vagas, pra confirmar que o job rodou
+        summary = (
+            f"# Vagas acadêmicas — semanal\n\n"
+            f"**Nenhuma vaga acima do threshold ({min_score}) esta semana.**\n\n"
+            f"- Total bruto: {len(raw_jobs)}\n"
+            f"- Não vistas: {len(new_jobs)}\n"
+            f"- Após pré-filtro: {len(candidates)}\n"
+            f"- Classificadas: {len(classified)}\n\n"
+            f"_Fontes ativas: EURAXESS, Jobs.ac.uk, KTH, ITU Copenhagen, NTNU, Aalto_\n"
+            f"_Fontes com erro: Academic Positions (403), Nature Careers (403), Aarhus (timeout)_\n"
+        )
+        html = markdown_to_html(summary)
+        subject = "📋 Vagas acadêmicas — sem novidades esta semana"
+        ok = send_email(subject, summary, html_body=html)
+        if not ok:
+            log.error("Email de digest falhou.")
+            return 2
+        log.info("Weekly digest enviado (sem vagas relevantes).")
         return 0
 
     # Relatório + email
