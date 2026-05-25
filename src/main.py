@@ -111,8 +111,7 @@ def main():
             f"- Não vistas: {len(new_jobs)}\n"
             f"- Após pré-filtro: {len(candidates)}\n"
             f"- Classificadas: {len(classified)}\n\n"
-            f"_Fontes ativas: EURAXESS, Jobs.ac.uk, KTH, ITU Copenhagen, NTNU, Aalto_\n"
-            f"_Fontes com erro: Academic Positions (403), Nature Careers (403), Aarhus (timeout)_\n"
+            f"_Fontes: EURAXESS, Jobs.ac.uk, KTH, ITU Copenhagen, NTNU, Aalto_\n"
         )
         html = markdown_to_html(summary)
         subject = "📋 Vagas acadêmicas — sem novidades esta semana"

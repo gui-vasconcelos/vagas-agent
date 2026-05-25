@@ -18,11 +18,8 @@ def collect_jobs(config):
     all_jobs = []
     fetchers = [
         ("EURAXESS", fetch_euraxess),
-        ("Academic Positions", fetch_academic_positions),
         ("Jobs.ac.uk", fetch_jobs_ac_uk),
-        ("Nature Careers", fetch_nature_careers),
         ("KTH", fetch_kth),
-        ("Aarhus", fetch_aarhus),
         ("ITU Copenhagen", fetch_itu_copenhagen),
         ("NTNU", fetch_ntnu),
         ("Aalto", fetch_aalto),
