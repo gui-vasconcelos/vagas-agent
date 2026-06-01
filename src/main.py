@@ -66,7 +66,21 @@ def main():
     log.info("Não vistas antes: %d", len(new_jobs))
 
     if not new_jobs:
-        log.info("Nada novo. Encerrando sem enviar email.")
+        log.info("Nada novo. Enviando digest semanal (sem vagas).")
+        summary = (
+            f"# Vagas acadêmicas — semanal\n\n"
+            f"**Nenhuma vaga nova esta semana.**\n\n"
+            f"- Total bruto: {len(raw_jobs)}\n"
+            f"- Não vistas: 0 (todas já processadas)\n\n"
+            f"_Fontes: EURAXESS, Jobs.ac.uk, KTH, ITU Copenhagen, NTNU, Aalto_\n"
+        )
+        html = markdown_to_html(summary)
+        subject = "📋 Vagas acadêmicas — sem novidades esta semana"
+        ok = send_email(subject, summary, html_body=html)
+        if not ok:
+            log.error("Email de digest falhou.")
+            return 2
+        log.info("Weekly digest enviado (sem vagas novas).")
         return 0
 
     # Pré-filtro por keyword — descarta vagas obviamente fora antes de gastar tokens

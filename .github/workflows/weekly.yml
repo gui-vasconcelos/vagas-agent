@@ -28,24 +28,6 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Test Resend (debug)
-        env:
-          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          EMAIL_TO: ${{ secrets.EMAIL_TO }}
-          EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
-        run: |
-          echo "Testing Resend API..."
-          echo "TO: $EMAIL_TO"
-          echo "FROM: $EMAIL_FROM"
-          RESPONSE=$(curl -s -w "\n%{http_code}" -X POST https://api.resend.com/emails \
-            -H "Authorization: Bearer $RESEND_API_KEY" \
-            -H "Content-Type: application/json" \
-            -d "{\"from\":\"$EMAIL_FROM\",\"to\":[\"$EMAIL_TO\"],\"subject\":\"🔧 Vagas-agent debug test\",\"text\":\"If this arrives, Resend is working. The issue is in the Python code.\"}")
-          HTTP_CODE=$(echo "$RESPONSE" | tail -1)
-          BODY=$(echo "$RESPONSE" | sed '$d')
-          echo "HTTP $HTTP_CODE"
-          echo "Response: $BODY"
-
       - name: Run agent
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
