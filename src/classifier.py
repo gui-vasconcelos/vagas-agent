@@ -30,15 +30,35 @@ REGRAS DE PONTUAÇÃO:
      postdoc, mesmo que prestigioso).
 
 2. FIT DE CONTEÚDO (aplicado só se nível passa):
-   - FIT FORTE (80-100): Vaga tenured/tenure-track que menciona Soma Design, Embodied Interaction,
-     Arquitetura+XR/VR/Fenomenologia, Design Research interdisciplinar, ou Spatial Computing com
-     ângulo humano.
-   - POSSÍVEL (50-79): Vaga tenured/tenure-track em Interaction Design generalista, HCI
-     experimental, Computational Design, Digital Design, Media Technology.
-   - ANOTAR (25-49): Vaga tenured/tenure-track em área tangente (Computer Science com slot
-     HCI, Architecture com componente digital, Media Studies).
-   - FORA (0-24): Vaga fora do perfil (CS puro algorítmico, ML/data science, IT, arquitetura
+   Use BOM SENSO — o candidato é interdisciplinar (Arquitetura + HCI). Uma vaga não precisa
+   mencionar os termos exatos da pesquisa dele pra ser relevante. Se a descrição sugere que
+   o perfil dele se encaixa, seja generoso.
+
+   - FIT FORTE (70-100): Vaga tenured/tenure-track em HCI, Interaction Design, Design Research,
+     Research-through-Design, Computational Design, Spatial Computing, Arquitetura Digital,
+     Media Architecture, Interactive Architecture, Creative Technology, Tangible Interaction,
+     XR/VR/AR, Game Design, Real-time Environments,
+     ou qualquer área onde a combinação Arquitetura+HCI do candidato seja um diferencial claro.
+     Soma Design, Fenomenologia, slow technology, RtD, experiência em Unity/Unreal são bônus,
+     não requisito.
+   - POSSÍVEL (50-69): Vaga tenured/tenure-track em área fronteiriça: Computer Science com
+     abertura pra HCI, Architecture com ênfase digital ou midiática, Media Technology,
+     Information Studies com componente de design, Digital Humanities com interface interativa,
+     Architectural Technology. O candidato se encaixa, mas não é o perfil óbvio.
+   - EM DÚVIDA (40-49): Vaga tenure-track em área tangente onde você não tem certeza se o
+     candidato se encaixa. Pode ser que sim, pode ser que não. Use esta categoria quando
+     a descrição for vaga, genérica, ou ambígua demais pra decidir. Ex: "Assistant Professor
+     in Computer Science" sem especificar área — talvez tenha slot HCI, talvez não. Essas
+     vagas vão para revisão manual do candidato.
+   - ANOTAR (25-39): Vaga tenure-track claramente fora da área do candidato (CS puro,
+     ML/Dados, IT, Arquitetura tradicional), mas que por algum motivo específico pode
+     ser interessante (localização, prestígio, salário).
+   - FORA (0-24): Vaga fora do perfil (CS algorítmico, ML/data science, IT, arquitetura
      tradicional sem tech), OU qualquer postdoc comum / PhD position.
+
+   IMPORTANTE: quando estiver em dúvida, use "EM DÚVIDA" (40-49) em vez de "ANOTAR" ou
+   "FORA". É melhor o candidato ver uma vaga duvidosa e decidir por si mesmo do que
+   perder uma oportunidade.
 
 VAGA A AVALIAR:
 Título: {title}
@@ -49,7 +69,7 @@ Descrição: {description}
 Retorne APENAS um JSON válido:
 {{
     "fit_score": (inteiro 0-100),
-    "fit_category": "Forte" | "Possível" | "Anotar" | "Fora",
+    "fit_category": "Forte" | "Possível" | "Em Dúvida" | "Anotar" | "Fora",
     "justification": "2 linhas em português. SEMPRE mencione o nível da vaga (postdoc, tenure-track, etc) e por que o score foi esse."
 }}
 """

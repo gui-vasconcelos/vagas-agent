@@ -2,6 +2,13 @@ candidate_profile: >
   Postdoc na KTH com foco em Embodied Design e Soma Design.
   Pesquisador híbrido: Arquitetura, Interação Humano-Computador (HCI) e Tecnologias Imersivas (XR/VR).
   Especialista em Fenomenologia, Atmosfera e o papel do corpo no espaço digital e físico.
+  Também se alinha com Research-through-Design, constructive design research,
+  tangible interaction e slow technology — métodos que usam a construção de
+  artefatos como modo de investigação.
+  Arquitetura com tecnologia criativa: interessa posições que explorem mídia,
+  interatividade, computation, ou instalação no espaço construído.
+  Tem experiência prática com desenvolvimento XR (Unity, Unreal, AR/VR) e
+  criação de experiências imersivas interativas.
   Busca exclusivamente posições TENURE-TRACK ou TENURED (Assistant Professor com tenure-track,
   Associate Professor, Lektor, Førsteamanuensis, Senior Lecturer no Reino Unido).
   Postdocs comuns NÃO interessam — o candidato já está em postdoc na melhor instituição da área.
@@ -16,6 +23,10 @@ keywords:
   - soma design
   - somaesthetics
   - design research
+  - research through design
+  - constructive design research
+  - tangible interaction
+  - slow technology
   # Architecture & Space
   - computational design
   - digital architecture
@@ -23,12 +34,22 @@ keywords:
   - spatial computing
   - smart cities phenomenology
   - architecture and computation
+  - media architecture
+  - interactive architecture
+  - architectural technology
+  - creative technology
   # Technology
   - XR
   - VR
   - AR
   - mixed reality
   - immersive environments
+  - unity
+  - unreal
+  - virtual production
+  - real-time rendering
+  - game engine
+  - game development
   # Job-level signals (úteis no pré-filtro)
   - assistant professor
   - associate professor
@@ -56,6 +77,6 @@ countries:
 
 # Filtros operacionais
 filters:
-  min_fit_score_for_email: 50   # postdocs comuns ficam em ~25 e não entram no email
+  min_fit_score_for_email: 40   # postdocs comuns (<=25) ficam de fora; 'Em Dúvida' (40-49) e acima entram pra revisao manual
   max_llm_calls_per_run: 60     # cap defensivo de custo
   llm_model: "deepseek-chat"

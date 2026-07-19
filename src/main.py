@@ -142,7 +142,9 @@ def main():
 
     strong = sum(1 for j in relevant if j.get("fit_category") == "Forte")
     possible = sum(1 for j in relevant if j.get("fit_category") == "Possível")
-    subject = f"📋 Vagas acadêmicas — {strong} fit forte, {possible} possível"
+    duvida = sum(1 for j in relevant if j.get("fit_category") == "Em Dúvida")
+    anotar = sum(1 for j in relevant if j.get("fit_category") == "Anotar")
+    subject = f"📋 Vagas acadêmicas — {strong} forte, {possible} possível, {duvida} dúvida, {anotar} anotar"
 
     ok = send_email(subject, report, html_body=html)
     if not ok:
