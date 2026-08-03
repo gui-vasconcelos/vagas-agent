@@ -98,11 +98,25 @@ def main():
         log.info("Nenhuma vaga passou no pré-filtro. Encerrando.")
         return 0
 
-    # Cap defensivo
+    # Cap defensivo — ordena por prioridade de nível ANTES de truncar, para
+    # não perder tenure-track quando o Jobbnorge (última fonte) estoura o cap.
     cap = config.get("filters", {}).get("max_llm_calls_per_run", 60)
     if len(candidates) > cap:
         log.warning("Excedeu cap de %d chamadas LLM; truncando.", cap)
-        candidates = candidates[:cap]
+
+        def _level_priority(j):
+            import re as _re
+            t = (j["title"] + " " + j.get("description", "")).lower()
+            # tenure-track/professor primeiro
+            strong = ["tenure", "lektor", "førsteamanuensis", "forsteamanuensis", "professor",
+                      "adjunktur", "lecturer", "adjunkt", "universitetslektor", "biträdande"]
+            weak = ["doktorand", "stipendiat", "phd", "postdoc", "postdoktor", "doktorgrad",
+                    "forskar", "research fellow"]
+            s = sum(1 for k in strong if k in t)
+            w = sum(1 for k in weak if k in t)
+            return (s, -w)
+
+        candidates = sorted(candidates, key=_level_priority, reverse=True)[:cap]
 
     # Classifica
     classified = classify_jobs(candidates, config)
