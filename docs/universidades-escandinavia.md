@@ -166,21 +166,20 @@ Legenda de status no vagas-agent:
 29. University of Oslo (UiO)
     Dept. Informatics — design, HCI.
     Vagas: https://www.uio.no/om/ledige-stillinger/vitenskapelig/
-    Status: [PEND] — página não lista links diretos; UiO publica no Jobbnorge
-    (https://www.jobbnorge.no). EURAXESS cobre.
+    Status: [AGREG] — coberta via Jobbnorge API (scraper dedicado).
 
 30. Oslo Metropolitan University (OsloMet)
     Dept. of Design (product, interaction, service design), Architecture.
     Vagas: https://www.oslomet.no/om/ledige-stillinger
-    Status: [PÁGINA] — links diretos /om/ledige-stillinger/<slug>.
+    Status: [PÁGINA] — links diretos /om/ledige-stillinger/<slug>. Também no Jobbnorge API.
 
 31. University of Bergen (UiB)
     Vagas: https://www.uib.no/om-uib/karriere-ved-uib
-    Status: [PEND] — UiB publica no Jobbnorge; EURAXESS cobre.
+    Status: [AGREG] — coberta via Jobbnorge API.
 
 32. UiT The Arctic University of Norway (Tromsø)
     Vagas: https://www.uit.no/om/jobb
-    Status: [PEND] — página não lista links diretos; Jobbnorge/EURAXESS.
+    Status: [AGREG] — coberta via Jobbnorge API.
 
 33. Oslo School of Architecture and Design (AHO)
     ★ Alta relevância: arquitetura + design, Institute of Design.
@@ -221,12 +220,12 @@ Legenda de status no vagas-agent:
 40. Tampere University
     HCI, gamification, interactive media.
     Vagas: https://www.tuni.fi/en/about-us/working-at-tampere-universities
-    Status: [JS] — JobTeaser bloqueia bots (403); EURAXESS cobre.
+    Status: [JS] — JobTeaser bloqueia bots (403 em tudo, API 404); EURAXESS cobre.
 
 41. University of Lapland
     Faculty of Art and Design.
     Vagas: https://ulapland.fi/yliopisto/toihin-yliopistoomme/avoimet-tyopaikat/
-    Status: [PEND] — JobTeaser; EURAXESS cobre.
+    Status: [PEND] — JobTeaser (bloqueado); EURAXESS cobre.
 
 42. University of Jyväskylä
     Vagas: https://www.jyu.fi/en/about-us/work-with-us/current-vacancies-at-the-university-of-jyvaskyla
@@ -240,24 +239,21 @@ Legenda de status no vagas-agent:
     Vagas: https://english.hi.is/about-ui/working-ui/vacancies
     Status: [PÁGINA] — poucos links; baixa prioridade geográfica.
 
-=============================================================================
 ## RESULTADO NA COLETA (2026-08-03, teste local)
-=============================================================================
 
-Total bruto: 592 vagas (era ~90 com as 6 fontes antigas)
-Após pré-filtro keywords: 204 candidatas (era ~5)
+Total bruto: ~900 vagas (era ~90 com as 6 fontes antigas)
+Após pré-filtro keywords: ~250 candidatas (era ~5)
 
 Principais ganhos vs. antes:
 - Konstfack e Malmö: agora cobertas (RSS Reachmee) — antes invisíveis
 - 8 universidades suecas via Varbi num scraper só
 - KU Copenhagen: 78 vagas (bug de UUID escondia as query strings)
+- Jobbnorge API: todas as universidades norueguesas num scraper só
+  (UiO, UiB, UiT, NTNU, OsloMet, UiA, AHO, Nord, HVL, NMBU, KHiO)
 - Keywords nórdicas no pré-filtro (doktorand, stipendiat, universitetslektor,
   interaktionsdesign, människa-datorinteraktion, arkitektur...)
 
 Ainda não cobertas diretamente (recomendação: revisão manual periódica):
 - Aalborg (SPA), Chalmers/LiU/GU (SPA), Linnaeus (403), Luleå (padrão Varbi
-  diferente), Skövde/Södertörn (portais próprios), UiO/UiB/UiT (Jobbnorge),
-  Tampere/Lapland (JobTeaser bloqueia bots).
-
-Próximo passo sugerido: scraper Jobbnorge (API requer auth, mas as páginas
-institucionais norueguesas já expõem links diretos — cobertas via [PÁGINA]).
+  diferente), Skövde/Södertörn (portais próprios),
+  Tampere/Lapland (JobTeaser bloqueia bots — testado, sem workaround).

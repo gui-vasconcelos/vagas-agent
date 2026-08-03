@@ -129,6 +129,7 @@ def collect_jobs(config):
         ("Páginas JS (best-effort)", fetch_page_sources_js),
         ("Aalborg (JSON-LD)", fetch_aalborg),
         ("KADK (hr-manager)", fetch_kadk),
+        ("Jobbnorge API (Noruega)", fetch_jobbnorge),
     ]
     for name, fn in fetchers:
         try:
@@ -509,6 +510,48 @@ def fetch_kadk():
         if href.startswith("/"):
             href = "https://kglakademi.dk" + href
         jobs.append(_create_job(title, "Royal Danish Academy (KADK)", "DK", href, title))
+    return jobs
+
+
+# Empregadores universitários noruegueses no Jobbnorge (filtro client-side;
+# a API pública não expõe employer ID no response, só o nome).
+JOBNORGE_UNIVERSITY_RE = re.compile(
+    r"(universitet|høgskole|hogskole|oslomet|ntnu|kunsthøgskole|arkitekt|designhøgskole|"
+    r"miljø- og biovitenskapelige|handelshøyskole)",
+    re.I,
+)
+
+
+def fetch_jobbnorge():
+    """Jobbnorge API pública (publicapi.jobbnorge.no) — cobre TODAS as
+    universidades norueguesas (UiO, UiB, UiT, NTNU, OsloMet, UiA, AHO, Nord,
+    HVL, NMBU, KHiO...). API validada 2026-08-03: GET /v1/Jobs?results=500&page=N.
+    Filtra por nome do empregador (universidade)."""
+    jobs = []
+    base = "https://publicapi.jobbnorge.no/v1/Jobs"
+    page = 1
+    max_pages = 8  # ~3000 vagas totais / 500 por página
+    while page <= max_pages:
+        r = requests.get(base, params={"results": 500, "page": page},
+                         headers=HEADERS, timeout=TIMEOUT)
+        r.raise_for_status()
+        items = r.json()
+        if not items:
+            break
+        for it in items:
+            employer = (it.get("employer") or "").strip()
+            if not employer or not JOBNORGE_UNIVERSITY_RE.search(employer):
+                continue
+            title = (it.get("title") or "").strip()
+            if not title or len(title) < 8:
+                continue
+            link = it.get("link") or f"https://www.jobbnorge.no/ledige-stillinger/stilling/{it.get('id')}"
+            desc = it.get("summary") or title
+            loc = it.get("location") or ""
+            if loc:
+                desc = f"[{loc}] {desc}"
+            jobs.append(_create_job(title, employer, "NO", link, desc))
+        page += 1
     return jobs
 
 
