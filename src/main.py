@@ -72,7 +72,7 @@ def main():
             f"**Nenhuma vaga nova esta semana.**\n\n"
             f"- Total bruto: {len(raw_jobs)}\n"
             f"- Não vistas: 0 (todas já processadas)\n\n"
-            f"_Fontes: EURAXESS, Jobs.ac.uk, KTH, ITU Copenhagen, NTNU, Aalto_\n"
+            f"_Fontes: EURAXESS, Jobs.ac.uk, KTH, ITU Copenhagen, NTNU, Aalto, Varbi (8 universidades suecas), Konstfack, Malmö, KU Copenhagen, Aarhus, SDU, Aalborg, KADK, OsloMet, UiA, AHO, Nord, HVL, Helsinki, Oulu, Chalmers, GU, LiU, BTH_\n"
         )
         html = markdown_to_html(summary)
         subject = "📋 Vagas acadêmicas — sem novidades esta semana"
@@ -125,7 +125,7 @@ def main():
             f"- Não vistas: {len(new_jobs)}\n"
             f"- Após pré-filtro: {len(candidates)}\n"
             f"- Classificadas: {len(classified)}\n\n"
-            f"_Fontes: EURAXESS, Jobs.ac.uk, KTH, ITU Copenhagen, NTNU, Aalto_\n"
+            f"_Fontes: EURAXESS, Jobs.ac.uk, KTH, ITU Copenhagen, NTNU, Aalto, Varbi (8 universidades suecas), Konstfack, Malmö, KU Copenhagen, Aarhus, SDU, Aalborg, KADK, OsloMet, UiA, AHO, Nord, HVL, Helsinki, Oulu, Chalmers, GU, LiU, BTH_\n"
         )
         html = markdown_to_html(summary)
         subject = "📋 Vagas acadêmicas — sem novidades esta semana"

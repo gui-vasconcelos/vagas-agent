@@ -60,6 +60,24 @@ keywords:
   - senior lecturer
   - førsteamanuensis
   - professor
+  # Nórdico/local — fontes escandinavas listam títulos no idioma local
+  - universitetslektor
+  - biträdande
+  - adjunkt
+  - doktorand
+  - forskare
+  - stipendiat
+  - interaktionsdesign
+  - interaksjonsdesign
+  - interaktion
+  - interaksjon
+  - människa-datorinteraktion
+  - menneske-maskin
+  - designforskning
+  - arkitektur
+  - avhandling
+  - "design research"
+  - "interaction design"
   # Postdocs com path claro de tenure (raros, mas captura quando aparecem)
   - tenure-track fellow
   - wallenberg
@@ -78,5 +96,5 @@ countries:
 # Filtros operacionais
 filters:
   min_fit_score_for_email: 40   # postdocs comuns (<=25) ficam de fora; 'Em Dúvida' (40-49) e acima entram pra revisao manual
-  max_llm_calls_per_run: 60     # cap defensivo de custo
+  max_llm_calls_per_run: 250     # 204 candidatas típicas com as fontes nórdicas novas; deepseek-chat é barato
   llm_model: "deepseek-chat"
