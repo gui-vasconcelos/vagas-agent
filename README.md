@@ -150,7 +150,9 @@ Four sections to rewrite for the new candidate:
 **`candidate_profile`** (free text) — who the candidate is: field, seniority,
 methods, what they want. Written in the classifier's scoring language (the
 prompt is Portuguese; keep the profile consistent with it or translate both).
-Example shape (replace entirely with the real profile):
+Emails, digest and report are in **English** since 2026-08-11 (the report maps
+internal category names to English labels in `src/reporter.py`; the LLM is
+asked for English justifications). Example shape (replace entirely with the real profile):
 
 ```yaml
 candidate_profile: >
@@ -188,7 +190,8 @@ candidate decides. Raise to 50 for fewer emails, lower for more coverage.
 ### 3. Adapt the classifier prompt — also person-specific
 
 `src/classifier.py` contains a long Portuguese prompt (`PROMPT_TEMPLATE`)
-written for the original candidate. Rewrite two parts:
+written for the original candidate. It is internal only — email content
+(subject, digest, report, justifications) is in English regardless. Rewrite two parts:
 
 1. **Level rules.** The current prompt hard-caps common postdocs at score 25
    ("the candidate is already a postdoc") and excludes PhD positions. If the

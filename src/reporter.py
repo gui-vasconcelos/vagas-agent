@@ -1,15 +1,25 @@
+CATEGORY_LABELS = {
+    "Forte": "Strong",
+    "Possível": "Possible",
+    "Em Dúvida": "Unsure",
+    "Anotar": "Noted",
+    "Fora": "Out",
+    "Erro": "Error",
+}
+
+
 def generate_report(jobs):
     by_cat = {"Forte": [], "Possível": [], "Em Dúvida": [], "Anotar": [], "Fora": [], "Erro": []}
     for j in jobs:
         cat = j.get("fit_category", "Erro")
         by_cat.setdefault(cat, []).append(j)
 
-    lines = ["# Relatório semanal de vagas acadêmicas", ""]
+    lines = ["# Weekly Academic Job Report", ""]
     lines.append(
-        f"**Resumo:** {len(by_cat['Forte'])} forte · "
-        f"{len(by_cat['Possível'])} possível · "
-        f"{len(by_cat['Em Dúvida'])} em dúvida · "
-        f"{len(by_cat['Anotar'])} anotar · "
+        f"**Summary:** {len(by_cat['Forte'])} strong · "
+        f"{len(by_cat['Possível'])} possible · "
+        f"{len(by_cat['Em Dúvida'])} unsure · "
+        f"{len(by_cat['Anotar'])} noted · "
         f"total: {len(jobs)}"
     )
     lines.append("")
@@ -23,23 +33,24 @@ def generate_report(jobs):
         items = by_cat[cat]
         if not items:
             continue
+        label = CATEGORY_LABELS.get(cat, cat)
         if cat == "Em Dúvida":
-            lines.append(f"## {emoji} {cat} ({len(items)}) — revise manualmente")
+            lines.append(f"## {emoji} {label} ({len(items)}) — review manually")
         else:
-            lines.append(f"## {emoji} {cat} ({len(items)})")
+            lines.append(f"## {emoji} {label} ({len(items)})")
         lines.append("")
         for j in items:
             lines.append(f"### [{j['title']}]({j['url']})")
-            lines.append(f"- **Instituição**: {j['company']} ({j.get('country', '?')})")
+            lines.append(f"- **Institution**: {j['company']} ({j.get('country', '?')})")
             lines.append(f"- **Score**: {j.get('fit_score', '?')}/100")
-            lines.append(f"- **Classificação**: {cat}")
-            lines.append(f"- **Análise**: {j.get('justification', '')}")
+            lines.append(f"- **Category**: {CATEGORY_LABELS.get(cat, cat)}")
+            lines.append(f"- **Analysis**: {j.get('justification', '')}")
             lines.append("")
         lines.append("---")
         lines.append("")
 
     if not any(by_cat[c] for c in ("Forte", "Possível", "Em Dúvida", "Anotar")):
-        lines.append("_Nenhuma vaga relevante nas fontes esta semana._")
+        lines.append("_No relevant jobs in the sources this week._")
 
     return "\n".join(lines)
 

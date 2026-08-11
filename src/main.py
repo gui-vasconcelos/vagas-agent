@@ -68,14 +68,14 @@ def main():
     if not new_jobs:
         log.info("Nada novo. Enviando digest semanal (sem vagas).")
         summary = (
-            f"# Vagas acadêmicas — semanal\n\n"
-            f"**Nenhuma vaga nova esta semana.**\n\n"
-            f"- Total bruto: {len(raw_jobs)}\n"
-            f"- Não vistas: 0 (todas já processadas)\n\n"
-            f"_Fontes: EURAXESS, Jobs.ac.uk, KTH, ITU Copenhagen, NTNU, Aalto, Varbi (8 universidades suecas), Konstfack, Malmö, KU Copenhagen, Aarhus, SDU, Aalborg, KADK, OsloMet, UiA, AHO, Nord, HVL, Helsinki, Oulu, Chalmers, GU, LiU, BTH_\n"
+            f"# Weekly Academic Jobs Digest\n\n"
+            f"**No new jobs this week.**\n\n"
+            f"- Total raw: {len(raw_jobs)}\n"
+            f"- Not seen: 0 (all already processed)\n\n"
+            f"_Sources: EURAXESS, Jobs.ac.uk, KTH, ITU Copenhagen, NTNU, Aalto, Varbi (8 Swedish universities), Konstfack, Malmö, KU Copenhagen, Aarhus, SDU, Aalborg, KADK, OsloMet, UiA, AHO, Nord, HVL, Helsinki, Oulu, Chalmers, GU, LiU, BTH_\n"
         )
         html = markdown_to_html(summary)
-        subject = "📋 Vagas acadêmicas — sem novidades esta semana"
+        subject = "📋 Academic jobs — no new openings this week"
         ok = send_email(subject, summary, html_body=html)
         if not ok:
             log.error("Email de digest falhou.")
@@ -133,16 +133,16 @@ def main():
     if not relevant:
         # Weekly digest: manda email mesmo sem vagas, pra confirmar que o job rodou
         summary = (
-            f"# Vagas acadêmicas — semanal\n\n"
-            f"**Nenhuma vaga acima do threshold ({min_score}) esta semana.**\n\n"
-            f"- Total bruto: {len(raw_jobs)}\n"
-            f"- Não vistas: {len(new_jobs)}\n"
-            f"- Após pré-filtro: {len(candidates)}\n"
-            f"- Classificadas: {len(classified)}\n\n"
-            f"_Fontes: EURAXESS, Jobs.ac.uk, KTH, ITU Copenhagen, NTNU, Aalto, Varbi (8 universidades suecas), Konstfack, Malmö, KU Copenhagen, Aarhus, SDU, Aalborg, KADK, OsloMet, UiA, AHO, Nord, HVL, Helsinki, Oulu, Chalmers, GU, LiU, BTH_\n"
+            f"# Weekly Academic Jobs Digest\n\n"
+            f"**No jobs above the score threshold ({min_score}) this week.**\n\n"
+            f"- Total raw: {len(raw_jobs)}\n"
+            f"- Not seen: {len(new_jobs)}\n"
+            f"- After pre-filter: {len(candidates)}\n"
+            f"- Classified: {len(classified)}\n\n"
+            f"_Sources: EURAXESS, Jobs.ac.uk, KTH, ITU Copenhagen, NTNU, Aalto, Varbi (8 Swedish universities), Konstfack, Malmö, KU Copenhagen, Aarhus, SDU, Aalborg, KADK, OsloMet, UiA, AHO, Nord, HVL, Helsinki, Oulu, Chalmers, GU, LiU, BTH_\n"
         )
         html = markdown_to_html(summary)
-        subject = "📋 Vagas acadêmicas — sem novidades esta semana"
+        subject = "📋 Academic jobs — no new openings this week"
         ok = send_email(subject, summary, html_body=html)
         if not ok:
             log.error("Email de digest falhou.")
@@ -158,7 +158,7 @@ def main():
     possible = sum(1 for j in relevant if j.get("fit_category") == "Possível")
     duvida = sum(1 for j in relevant if j.get("fit_category") == "Em Dúvida")
     anotar = sum(1 for j in relevant if j.get("fit_category") == "Anotar")
-    subject = f"📋 Vagas acadêmicas — {strong} forte, {possible} possível, {duvida} dúvida, {anotar} anotar"
+    subject = f"📋 Academic jobs — {strong} strong, {possible} possible, {duvida} unsure, {anotar} noted"
 
     ok = send_email(subject, report, html_body=html)
     if not ok:

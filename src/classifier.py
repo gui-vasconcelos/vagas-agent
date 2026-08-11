@@ -70,7 +70,7 @@ Retorne APENAS um JSON válido:
 {{
     "fit_score": (inteiro 0-100),
     "fit_category": "Forte" | "Possível" | "Em Dúvida" | "Anotar" | "Fora",
-    "justification": "2 linhas em português. SEMPRE mencione o nível da vaga (postdoc, tenure-track, etc) e por que o score foi esse."
+    "justification": "2 lines in English. ALWAYS mention the job level (postdoc, tenure-track, etc) and why the score was given."
 }}
 """
 
